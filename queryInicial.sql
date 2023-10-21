@@ -7,20 +7,23 @@ CREATE TABLE clientes (
 );
 
 CREATE TABLE vehiculos (
+	id_vehiculo INT NOT NULL,
 	placa TEXT NOT NULL,
     tipo_vehiculo TEXT,
     marca TEXT,
     modelo TEXT,
     id_cliente DOUBLE,
-    PRIMARY KEY (placa),
+    PRIMARY KEY (id_vehiculo),
     FOREIGN KEY (id_cliente) REFERENCES clientes(cedula)
 );
 
 CREATE TABLE tarifas(
+	id_tarifa INT,
 	hora_entrada DATETIME,
     hora_salida DATETIME,
-    id_vehiculo TEXT,
+    id_vehiculo INT,
     valor_total INT,
-    PRIMARY KEY (hora_entrada),
-    FOREIGN KEY (id_vehiculo) REFERENCES vehiculos(placa)
+    PRIMARY KEY (id_tarifa),
+    FOREIGN KEY (id_vehiculo) REFERENCES vehiculos(id_vehiculo)
 );
+

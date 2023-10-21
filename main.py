@@ -13,7 +13,7 @@ class DataBase:
         print('Conexión establecida exitosamente')
 
     def select_user(self, cedula):
-        sql = 'SELECT cedula, nombre, telefono FROM clientes WHERE cedula = {}'.format(cedula)
+        sql = 'SELECT cedula, nombre, apellido, telefono FROM clientes WHERE cedula = {}'.format(cedula)
 
         try:
             self.cursor.execute(sql)
@@ -21,12 +21,13 @@ class DataBase:
 
             print("Cédula: ", user[0])
             print("Nombre: ", user[1])
-            print("Teléfono: ", user[2])
+            print("Apellido: ", user[2])
+            print("Teléfono: ", user[3])
 
         except Exception as e:
             raise
 
-    def select_all_users(self)        
+    def select_all_users(self):
         sql = 'SELECT cedula, nombre, telefono FROM clientes'
 
         try:
@@ -36,7 +37,8 @@ class DataBase:
             for user in users:
                 print("Cédula: ", user[0])
                 print("Nombre: ", user[1])
-                print("Teléfono: ", user[2])
+                print("Apellido: ", user[2])
+                print("Teléfono: ", user[3])
                 print("______\n")
 
         except Exception as e:
@@ -48,11 +50,16 @@ class DataBase:
         try:
             self.cursor.execute(sql)
             self.connection.commit()
-            
+
         except Exception as e:
             raise
 
+    def close(self):
+        self.connection.close()
+
 database = DataBase()
-database.select_user(1)
-database.update_user(1, 'Guillermo')
-database.select_user(1)
+
+database.select_user(1014287766)
+database.update_user(1014287766, 'Guillermo')
+database.select_user(1014287766)
+database.close()
