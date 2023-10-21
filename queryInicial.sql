@@ -27,3 +27,9 @@ CREATE TABLE tarifas(
     FOREIGN KEY (id_vehiculo) REFERENCES vehiculos(id_vehiculo)
 );
 
+INSERT INTO clientes
+VALUES (
+	10104568231, 'Amelia', 'Cruz', '3195502684' 
+);
+
+select * from clientes;

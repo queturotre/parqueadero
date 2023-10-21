@@ -28,7 +28,7 @@ class DataBase:
             raise
 
     def select_all_users(self):
-        sql = 'SELECT cedula, nombre, telefono FROM clientes'
+        sql = 'SELECT cedula, nombre, apellido, telefono FROM clientes'
 
         try:
             self.cursor.execute(sql)
@@ -54,6 +54,16 @@ class DataBase:
         except Exception as e:
             raise
 
+    def create_user(self):
+        sql = "INSERT INTO clientes VALUES ( 10139744434, 'Natalia','Beltrán','3142897560' );"
+
+        try:
+            self.cursor.execute(sql)
+            self.connection.commit()
+
+        except Exception as e:
+            raise
+
     def close(self):
         self.connection.close()
 
@@ -62,4 +72,6 @@ database = DataBase()
 database.select_user(1014287766)
 database.update_user(1014287766, 'Guillermo')
 database.select_user(1014287766)
+#database.create_user()
+database.select_all_users()
 database.close()
