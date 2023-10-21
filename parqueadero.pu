@@ -1,0 +1,71 @@
+@startumlclass
+class Cliente{
+    -cedula : String
+    -nombre: String
+    -apellido: String
+    -telefono: String
+    +crear_cliente(cedula, nombre, apellido, telefono)
+    +actualizar_cliente()
+    +eliminar_cliente()
+    +obtener_cedula()
+    +establecer_cedula(cedula)
+    +obtener_nombre()
+    +establecer_nombre(nombre)
+    +obtener_apellido()
+    +establecer_apellido(apellido)
+    +obtener_telefono()
+    +establecer_telefono(telefono)
+}
+
+class Vehiculo{ 
+    -id_vehiculo: int
+    -placa : String
+    -marca : String
+    -modelo : String
+    -id_cliente: int
+    +crear_vehiculo(id_vehiculo, placa, marca, modelo)
+    +editar_vehiculo()
+    +eliminar_vehiculo()
+    +obtener_placa()
+    +establecer_placa(placa)
+    +obtener_marca()
+    +establecer_marca(marca)
+    +obtener_modelo()
+    +establecer_modelo(modelo)
+    +obtener_id_cliente
+    +establecer_id_cliente(id_cliente)
+}
+
+class Tarifa{
+    -id_tarifa : int
+    -id_vehiculo: int
+    -hora_entrada: datetime
+    -hora_salida: datetime
+    -valor_total: int
+    +obtener_hora_entrada()
+    +establecer_hora_entrada()
+    +obtener_hora_salida()
+    +establecer_hora_salida()
+    +obtener_valor_total()
+    +establecer_valor_total()
+}
+
+Class Carro{
+
+}
+
+Class Moto{
+
+}
+
+Class Bici{
+
+}
+
+Cliente *--> Vehiculo
+Cliente *--> Tarifa
+Carro --|> Vehiculo
+Moto --|> Vehiculo
+Bici --|> Vehiculo
+
+@enduml
