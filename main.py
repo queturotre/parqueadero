@@ -19,11 +19,14 @@ class DataBase:
             self.cursor.execute(sql)
             user = self.cursor.fetchone()
 
-            print("Cédula: ", user[0])
-            print("Nombre: ", user[1])
-            print("Apellido: ", user[2])
-            print("Teléfono: ", user[3])
-
+            if user:
+                print("Cédula: ", user[0])
+                print("Nombre: ", user[1])
+                print("Apellido: ", user[2])
+                print("Teléfono: ", user[3])
+            else:
+                print("Usuario con cédul {} no encontrado.".format(cedula))
+                
         except Exception as e:
             raise
 
