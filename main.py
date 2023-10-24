@@ -1,80 +1,72 @@
-import pymysql
+"""
+Para servicio de parqueo de automóviles con cierta capacidad de autos, para el registro
+1. Con el número de la placa del auto
+2. la hora de ingreso
+3. tipo vehiculo (carro, moto)
+4. ticket generado (nros del 1 al 10000)
+5. puesto asignado (aleatorio vacio)
 
-class DataBase:
-    def __init__(self):
-        self.connection = pymysql.connect(
-            host = 'localhost',
-            user = 'root',
-            password = '',
-            db='parqueadero'
-        )
-        self.cursor = self.connection.cursor()
+imprimir un ticket numerado y una asignacion de donde debe ubicarse. Cabe destacar que existen 40 espacios para carros y 10 para motos, esto lo puede actualizar en el archivo parqueadero.txt. En caso de llenarse debe presentar un mensaje de que no existe espacio para tal vehiculo.
 
-        print('Conexión establecida exitosamente')
+Registre todos los vehiculos en el archivo registros.txt que si ingresaron al parqueadero en el formato: PLACA, HoraIngreso, HoraSalida, PuestoAsignado, NroTicket.
 
-    def select_user(self, cedula):
-        sql = 'SELECT cedula, nombre, apellido, telefono FROM clientes WHERE cedula = {}'.format(cedula)
+Con el siguiente menú:
+1. Ingreso de automovil
+2. Retiro de automovil
+3. Revisión de estado del parqueadero
+4. Revision de Registros
+5. Salir
+"""
+import datetime
+import random
+import parking #funciones que se crearon la clase anterior
 
-        try:
-            self.cursor.execute(sql)
-            user = self.cursor.fetchone()
+parking.creaParqueadero(30,5) #Si se desea borrar todo
 
-            if user:
-                print("Cédula: ", user[0])
-                print("Nombre: ", user[1])
-                print("Apellido: ", user[2])
-                print("Teléfono: ", user[3])
+print("Bienvenido a su parqueadero")
+print("""Opciones: 
+1. Ingreso de automovil
+2. Retiro de automovil
+3. Revisión de estado del parqueadero
+4. Revision de Registros
+5. Salir""")
+opcion=0
+while opcion !=5:
+    opcion = input("Seleccione opción: ")
+    if opcion.isdigit():
+        opcion=int(opcion)
+        if opcion not in range(1,6):
+            print("Opción incorrecta")
+        elif opcion==1:
+            tipo = input("Ingrese tipo Auto/Moto: ")
+            if parking.validarDisponibilidad(tipo):
+                placa = input("Ingrese nro placa: ")
+                ingreso = input("Ingrese hora de ingreso: ")
+                print(datetime.date)
+                ticket = str(random.randint(1,10000))
+                print('Nro Ticket:',ticket)
+                puesto = parking.asignePosicion(tipo).strip()
+                print('Asignación', puesto)
+                parking.actualizaDisponibilidad(puesto,placa)
+                parking.registrarAutomovil(placa,ingreso,"",puesto,ticket)
             else:
-                print("Usuario con cédul {} no encontrado.".format(cedula))
-                
-        except Exception as e:
-            raise
+                print("Actualmente no existe parqueo disponible")
+        elif opcion==2:
+            placa = input("Ingrese nro placa: ")
+            puesto = parking.consultarLugarParqueo(placa)
+            if puesto!="No":
+                salida = input("Ingrese hora de salida: ")
+                parking.actualizaDisponibilidad(puesto, '')
+                parking.registrarAutomovil(placa,'',salida,puesto,'')
+            else:
+                print(f"El vehiculo con placa:{placa} no está dentro del parqueadero")
+        elif opcion == 3:
+            parking.consultarParqueadero('registros.txt')
+        elif opcion==4:
+            parking.consultarParqueadero('parqueadero.txt')
+        elif opcion==5:
+            print("Saliendo del sistema")
+    else:
+        print("El valor ingresado no es un digito")
+print("Gracias por usar nuestro servicio")
 
-    def select_all_users(self):
-        sql = 'SELECT cedula, nombre, apellido, telefono FROM clientes'
-
-        try:
-            self.cursor.execute(sql)
-            users = self.cursor.fetchall()
-
-            for user in users:
-                print("Cédula: ", user[0])
-                print("Nombre: ", user[1])
-                print("Apellido: ", user[2])
-                print("Teléfono: ", user[3])
-                print("______\n")
-
-        except Exception as e:
-            raise
-    
-    def update_user(self, cedula, nombre):
-        sql = "UPDATE clientes SET nombre = '{}' WHERE cedula = {}".format(nombre, cedula)
-
-        try:
-            self.cursor.execute(sql)
-            self.connection.commit()
-
-        except Exception as e:
-            raise
-
-    def create_user(self):
-        sql = "INSERT INTO clientes VALUES ( 10139744434, 'Natalia','Beltrán','3142897560' );"
-
-        try:
-            self.cursor.execute(sql)
-            self.connection.commit()
-
-        except Exception as e:
-            raise
-
-    def close(self):
-        self.connection.close()
-
-database = DataBase()
-
-database.select_user(1014287766)
-database.update_user(1014287766, 'Guillermo')
-database.select_user(1014287766)
-#database.create_user()
-database.select_all_users()
-database.close()
